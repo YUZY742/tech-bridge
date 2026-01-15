@@ -54,13 +54,18 @@ io.on('connection', (socket) => {
   });
 });
 
-// Vercel用のエクスポート
-if (process.env.VERCEL) {
-  module.exports = app;
-} else {
-  // ローカル開発用
-  const PORT = process.env.PORT || 5000;
+// Vercel用のエクスポート（Vercelではappを直接エクスポート）
+// ただし、Socket.ioを使う場合はserverをエクスポートする必要がある
+// Vercel Serverless FunctionsではSocket.ioは制限があるため、通常のHTTPリクエストのみ対応
+
+const PORT = process.env.PORT || 5000;
+
+// ローカル開発時のみサーバーを起動
+if (!process.env.VERCEL) {
   server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
 }
+
+// Vercel用のエクスポート
+module.exports = app;
