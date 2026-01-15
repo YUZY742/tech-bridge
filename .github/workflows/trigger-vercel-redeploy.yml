@@ -1,0 +1,27 @@
+name: Trigger Vercel Redeploy
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'vercel.json'
+      - 'server/**'
+      - 'client/**'
+  workflow_dispatch:
+
+jobs:
+  trigger-redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Trigger Vercel redeploy
+        run: |
+          echo "Vercel will automatically redeploy when vercel.json or code changes are detected"
+          echo "If automatic redeploy doesn't work, manually trigger from Vercel dashboard"
+      
+      - name: Check deployment status
+        run: |
+          echo "Check Vercel dashboard for deployment status:"
+          echo "https://vercel.com/dashboard"
