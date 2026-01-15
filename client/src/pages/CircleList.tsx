@@ -31,23 +31,23 @@ const CircleList: React.FC = () => {
   });
 
   useEffect(() => {
+    const fetchCircles = async () => {
+      try {
+        const params: any = {};
+        if (filters.category) params.category = filters.category;
+        if (filters.search) params.search = filters.search;
+
+        const response = await axios.get(`${API_URL}/api/circles`, { params });
+        setCircles(response.data.circles || response.data);
+      } catch (error) {
+        console.error('Error fetching circles:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchCircles();
   }, [filters]);
-
-  const fetchCircles = async () => {
-    try {
-      const params: any = {};
-      if (filters.category) params.category = filters.category;
-      if (filters.search) params.search = filters.search;
-
-      const response = await axios.get(`${API_URL}/api/circles`, { params });
-      setCircles(response.data.circles || response.data);
-    } catch (error) {
-      console.error('Error fetching circles:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return <div className="loading">読み込み中...</div>;

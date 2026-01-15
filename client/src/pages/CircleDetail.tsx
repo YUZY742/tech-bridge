@@ -12,21 +12,21 @@ const CircleDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
-      fetchCircle();
-    }
-  }, [id]);
+    const fetchCircle = async () => {
+      if (!id) return;
+      
+      try {
+        const response = await axios.get(`${API_URL}/api/circles/${id}`);
+        setCircle(response.data);
+      } catch (error) {
+        console.error('Error fetching circle:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const fetchCircle = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/api/circles/${id}`);
-      setCircle(response.data);
-    } catch (error) {
-      console.error('Error fetching circle:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchCircle();
+  }, [id]);
 
   if (loading) {
     return <div className="loading">読み込み中...</div>;
