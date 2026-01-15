@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
+import { API_URL } from '../config';
 import './CircleDetail.css';
 
 const CircleDetail: React.FC = () => {
@@ -18,7 +19,7 @@ const CircleDetail: React.FC = () => {
 
   const fetchCircle = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/circles/${id}`);
+      const response = await axios.get(`${API_URL}/api/circles/${id}`);
       setCircle(response.data);
     } catch (error) {
       console.error('Error fetching circle:', error);

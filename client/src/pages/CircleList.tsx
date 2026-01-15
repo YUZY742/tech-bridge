@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../config';
 import './CircleList.css';
 
 interface Circle {
@@ -39,7 +40,7 @@ const CircleList: React.FC = () => {
       if (filters.category) params.category = filters.category;
       if (filters.search) params.search = filters.search;
 
-      const response = await axios.get('http://localhost:5000/api/circles', { params });
+      const response = await axios.get(`${API_URL}/api/circles`, { params });
       setCircles(response.data.circles || response.data);
     } catch (error) {
       console.error('Error fetching circles:', error);
