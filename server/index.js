@@ -29,6 +29,7 @@ mongoose.connect(MONGODB_URI, {
 .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
+app.use('/api/health', require('./routes/health'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/circles', require('./routes/circles'));
 app.use('/api/companies', require('./routes/companies'));
