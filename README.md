@@ -130,16 +130,22 @@ npm start
 
 ## デプロイ
 
+### クイックスタート
+
+**5分で始める**: [QUICK_START.md](./QUICK_START.md) を参照してください。
+
+### デプロイ済み
+
+- **フロントエンド**: https://tech-bridge-uybw.vercel.app
+- **リポジトリ**: https://github.com/YUZY742/tech-bridge
+
+### 環境変数の設定
+
+環境変数を設定するには [ENV_SETUP.md](./ENV_SETUP.md) を参照してください。
+
+### 詳細なデプロイ手順
+
 GitHubへのデプロイ手順は [GITHUB_DEPLOY.md](./GITHUB_DEPLOY.md) を参照してください。
-
-### クイックデプロイ（Vercel推奨）
-
-1. GitHubにリポジトリをプッシュ
-2. [Vercel](https://vercel.com)でGitHubリポジトリをインポート
-3. 環境変数を設定
-4. デプロイ完了
-
-詳細は [GITHUB_DEPLOY.md](./GITHUB_DEPLOY.md) を参照してください。
 
 ## ライセンス
 
