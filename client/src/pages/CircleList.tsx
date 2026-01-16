@@ -20,22 +20,32 @@ interface Circle {
       required: boolean;
     };
   };
+  supporters?: Array<{
+    status: string;
+  }>;
+  isRookie?: boolean;
 }
+
+const categories = [
+  { id: '', label: 'すべて' },
+  { id: 'ロボコン', label: 'ロボコン' },
+  { id: 'ロケット', label: 'ロケット' },
+  { id: '鳥人間', label: '鳥人間' },
+  { id: 'その他', label: 'その他' }
+];
 
 const CircleList: React.FC = () => {
   const [circles, setCircles] = useState<Circle[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({
-    category: '',
-    search: ''
-  });
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchCircles = async () => {
       try {
         const params: any = {};
-        if (filters.category) params.category = filters.category;
-        if (filters.search) params.search = filters.search;
+        if (selectedCategory) params.category = selectedCategory;
+        if (searchQuery) params.search = searchQuery;
 
         const response = await axios.get(`${API_URL}/api/circles`, { params });
         setCircles(response.data.circles || response.data);
@@ -47,55 +57,152 @@ const CircleList: React.FC = () => {
     };
 
     fetchCircles();
-  }, [filters]);
+  }, [selectedCategory, searchQuery]);
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'ロボコン':
+        return '🤖';
+      case 'ロケット':
+        return '🚀';
+      case '鳥人間':
+        return '✈️';
+      default:
+        return '🔧';
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'ロボコン':
+        return '#007AFF';
+      case 'ロケット':
+        return '#FF3B30';
+      case '鳥人間':
+        return '#34C759';
+      default:
+        return '#8E8E93';
+    }
+  };
 
   if (loading) {
-    return <div className="loading">読み込み中...</div>;
+    return (
+      <div className="circle-list">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>読み込み中...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="circle-list">
-      <h1>サークル一覧</h1>
-      
-      <div className="filters">
-        <input
-          type="text"
-          placeholder="検索..."
-          value={filters.search}
-          onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-          className="search-input"
-        />
-        <select
-          value={filters.category}
-          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-          className="filter-select"
-        >
-          <option value="">すべてのカテゴリ</option>
-          <option value="ロボコン">ロボコン</option>
-          <option value="ロケット">ロケット</option>
-          <option value="鳥人間">鳥人間</option>
-          <option value="その他">その他</option>
-        </select>
+      {/* ヘッダー */}
+      <div className="circle-list-header">
+        <h1>サークルを探す</h1>
+        <div className="search-container">
+          <div className="search-box">
+            <span className="search-icon">🔍</span>
+            <input
+              type="text"
+              placeholder="サークル名、大学名で検索"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="search-input"
+            />
+            {searchQuery && (
+              <button
+                className="clear-search"
+                onClick={() => setSearchQuery('')}
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
-      <div className="circle-grid">
-        {circles.map((circle) => (
-          <Link key={circle._id} to={`/circles/${circle._id}`} className="circle-card">
-            <h3>{circle.name}</h3>
-            <p className="university">{circle.university}</p>
-            <p className="category">{circle.category}</p>
-            <p className="description">{circle.description.substring(0, 150)}...</p>
-            {circle.needs?.funding?.required && (
-              <div className="funding-badge">
-                資金支援が必要: ¥{circle.needs.funding.amount?.toLocaleString()}
-              </div>
-            )}
-          </Link>
+      {/* カテゴリタブ */}
+      <div className="category-tabs">
+        {categories.map((category) => (
+          <button
+            key={category.id}
+            className={`category-tab ${selectedCategory === category.id ? 'active' : ''}`}
+            onClick={() => setSelectedCategory(category.id)}
+          >
+            {category.label}
+          </button>
         ))}
       </div>
 
-      {circles.length === 0 && (
-        <div className="no-results">サークルが見つかりませんでした</div>
+      {/* サークルグリッド */}
+      {circles.length > 0 ? (
+        <div className="circle-grid">
+          {circles.map((circle) => (
+            <Link
+              key={circle._id}
+              to={`/circles/${circle._id}`}
+              className="circle-card"
+            >
+              {/* アイコンエリア */}
+              <div
+                className="circle-icon"
+                style={{ backgroundColor: getCategoryColor(circle.category) + '20' }}
+              >
+                <span className="category-emoji">{getCategoryIcon(circle.category)}</span>
+              </div>
+
+              {/* 情報エリア */}
+              <div className="circle-info">
+                <div className="circle-header">
+                  <h3 className="circle-name">{circle.name}</h3>
+                  {circle.isRookie && (
+                    <span className="rookie-badge">NEW</span>
+                  )}
+                </div>
+                <p className="circle-university">{circle.university}</p>
+                <p className="circle-description">
+                  {circle.description.length > 80
+                    ? circle.description.substring(0, 80) + '...'
+                    : circle.description}
+                </p>
+                
+                {/* 技術スタック */}
+                {circle.techStack?.languages && circle.techStack.languages.length > 0 && (
+                  <div className="tech-tags">
+                    {circle.techStack.languages.slice(0, 3).map((lang, idx) => (
+                      <span key={idx} className="tech-tag">{lang}</span>
+                    ))}
+                    {circle.techStack.languages.length > 3 && (
+                      <span className="tech-tag">+{circle.techStack.languages.length - 3}</span>
+                    )}
+                  </div>
+                )}
+
+                {/* フッター情報 */}
+                <div className="circle-footer">
+                  {circle.needs?.funding?.required && (
+                    <span className="funding-indicator">
+                      💰 資金支援募集中
+                    </span>
+                  )}
+                  {circle.supporters && circle.supporters.length > 0 && (
+                    <span className="supporters-count">
+                      {circle.supporters.length}社が支援中
+                    </span>
+                  )}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="no-results">
+          <div className="no-results-icon">🔍</div>
+          <h3>サークルが見つかりませんでした</h3>
+          <p>検索条件を変更してお試しください</p>
+        </div>
       )}
     </div>
   );
