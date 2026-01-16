@@ -1,0 +1,382 @@
+.student-dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #0066cc;
+}
+
+.dashboard-header h1 {
+  color: #003366;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-message {
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.welcome-message strong {
+  color: #003366;
+}
+
+/* 評価セクション */
+.evaluation-section {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 8px;
+  border-left: 4px solid #0066cc;
+  margin-bottom: 2rem;
+}
+
+.evaluation-section h2 {
+  color: #003366;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.evaluation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.evaluation-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.evaluation-card.overall {
+  border: 2px solid #0066cc;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.evaluation-card h3 {
+  color: #003366;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.score-circle {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.score-value {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #0066cc;
+}
+
+.score-max {
+  font-size: 1.5rem;
+  color: #666;
+  margin-left: 0.5rem;
+}
+
+.score-description {
+  text-align: center;
+  color: #555;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.score-bar {
+  width: 100%;
+  height: 30px;
+  background-color: #e9ecef;
+  border-radius: 15px;
+  overflow: hidden;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0066cc 0%, #0052a3 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: width 0.3s ease;
+}
+
+.score-detail {
+  color: #555;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+/* サークルグリッド */
+.circles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.circle-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  border-left: 4px solid #0066cc;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.circle-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.circle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.circle-header h3 {
+  color: #003366;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.circle-header h3 a {
+  color: #003366;
+  text-decoration: none;
+}
+
+.circle-header h3 a:hover {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+.role-badge {
+  background-color: #0066cc;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.circle-university {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.circle-category {
+  display: inline-block;
+  background-color: #e9ecef;
+  color: #333;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.circle-stats {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem 0;
+  border-top: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.circle-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value-small {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #003366;
+}
+
+.view-details-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.view-details-link:hover {
+  text-decoration: underline;
+}
+
+/* 活動ログ */
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activity-item {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  border-left: 4px solid #0066cc;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.activity-header h4 {
+  color: #003366;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.activity-date {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.activity-text {
+  color: #333;
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.contribution-text {
+  color: #555;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.contribution-text strong {
+  color: #003366;
+}
+
+/* 支援状況 */
+.supports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.support-item {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.support-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.support-header h4 {
+  color: #003366;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-approved {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-disbursed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-completed {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.support-company,
+.support-type,
+.support-amount {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+}
+
+.support-amount {
+  color: #0066cc;
+  font-weight: bold;
+}
+
+.empty-message {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .student-dashboard {
+    padding: 1rem;
+  }
+
+  .evaluation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .circles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .circle-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
