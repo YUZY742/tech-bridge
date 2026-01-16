@@ -29,7 +29,22 @@ const userSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
   }
+});
+
+// データ分析用インデックス
+userSchema.index({ role: 1, createdAt: -1 }); // ロール別分析用
+userSchema.index({ 'profile.university': 1 }); // 大学別分析用
+
+userSchema.pre('save', async function(next) {
+  if (this.isModified() && !this.isNew) {
+    this.updatedAt = new Date();
+  }
+  next();
 });
 
 userSchema.pre('save', async function(next) {

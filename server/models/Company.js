@@ -78,4 +78,9 @@ const companySchema = new mongoose.Schema({
   }
 });
 
+// データ分析用インデックス
+companySchema.index({ industry: 1 }); // 業界別分析用
+companySchema.index({ 'supportedCircles.status': 1 }); // 支援状況分析用
+companySchema.index({ createdAt: -1 }); // 時系列分析用
+
 module.exports = mongoose.model('Company', companySchema);

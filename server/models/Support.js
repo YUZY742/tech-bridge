@@ -84,7 +84,14 @@ const supportSchema = new mongoose.Schema({
   }
 });
 
+// 基本インデックス
 supportSchema.index({ companyId: 1, circleId: 1 });
 supportSchema.index({ status: 1, createdAt: -1 });
+
+// データ分析用インデックス
+supportSchema.index({ supportType: 1, status: 1 }); // 支援タイプ別分析用
+supportSchema.index({ amount: 1, createdAt: -1 }); // 金額分析用
+supportSchema.index({ 'activityLogs.date': -1 }); // 活動ログ分析用
+supportSchema.index({ createdAt: -1 }); // 時系列分析用
 
 module.exports = mongoose.model('Support', supportSchema);

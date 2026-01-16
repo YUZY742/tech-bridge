@@ -130,7 +130,15 @@ const circleSchema = new mongoose.Schema({
   }
 });
 
+// 検索用インデックス
 circleSchema.index({ name: 'text', description: 'text', category: 'text', tags: 'text' });
 circleSchema.index({ university: 1, region: 1, category: 1 });
+
+// データ分析用インデックス
+circleSchema.index({ createdAt: -1 }); // 時系列分析用
+circleSchema.index({ 'members.userId': 1 }); // メンバー検索用
+circleSchema.index({ 'activityLogs.date': -1 }); // 活動ログ分析用
+circleSchema.index({ 'supporters.status': 1, 'supporters.createdAt': -1 }); // 支援状況分析用
+circleSchema.index({ isRookie: 1, createdAt: -1 }); // 新規サークル分析用
 
 module.exports = mongoose.model('Circle', circleSchema);
