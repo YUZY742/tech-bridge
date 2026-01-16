@@ -137,15 +137,21 @@ router.get('/evaluation', authenticate, async (req, res) => {
 
     // Calculate scores (0-100 scale)
     
-    // 1. Technical Score (技術力)
-    // - Portfolio items: 30 points max
+    // 1. Technical Score (技術力) - 多角的評価の準備
+    // - Portfolio items: 30 points max (GitHub、設計図面、実験データ、活動報告書)
     // - Tech stack diversity: 20 points max
     // - Contributions: 25 points max
+    // 将来の拡張: コード品質、設計能力、実装能力なども評価予定
     const technicalScore = Math.min(100, 
       Math.min(30, totalPortfolioItems * 5) +
       Math.min(20, techStackCount.size * 4) +
       Math.min(25, totalContributions * 2)
     );
+    
+    // 将来の拡張: 設計図面の質、実験データの質、技術文書の質なども評価
+    // TODO: 設計図面の質評価（ファイルサイズ、詳細度など）
+    // TODO: 実験データの質評価（データ量、分析の深さなど）
+    // TODO: 技術文書の質評価（文書の長さ、構造化度など）
 
     // 2. Grit Score (継続性・やり抜く力)
     // - Active days: 40 points max
@@ -178,11 +184,19 @@ router.get('/evaluation', authenticate, async (req, res) => {
     );
 
     // Overall Score (weighted average)
+    // 現段階: 技術力40%、継続性35%、貢献度25%
+    // 将来の拡張: 協調性、問題解決能力、学習能力なども追加予定
     const overallScore = Math.round(
       technicalScore * 0.4 + 
       gritScore * 0.35 + 
       contributionScore * 0.25
     );
+    
+    // 将来の評価軸（実装予定）
+    // TODO: 協調性スコア（コミュニケーション能力、リーダーシップ、メンターシップ）
+    // TODO: 問題解決能力スコア（課題発見、解決プロセス、イノベーション）
+    // TODO: 学習能力スコア（学習速度、適応能力）
+    // TODO: 外部評価スコア（企業フィードバック、メンター評価、ピアレビュー）
 
     // Generate descriptions
     const getScoreDescription = (score) => {

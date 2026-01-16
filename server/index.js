@@ -38,6 +38,7 @@ app.use('/api/supports', require('./routes/supports'));
 app.use('/api/chat', require('./routes/chat'));
 app.use('/api/activity', require('./routes/activity'));
 app.use('/api/analytics', require('./routes/analytics'));
+app.use('/api/evaluation', require('./routes/evaluation'));
 
 // Socket.io for real-time chat
 io.on('connection', (socket) => {
