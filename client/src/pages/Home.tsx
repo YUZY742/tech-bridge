@@ -18,6 +18,92 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      <section className="system-architecture">
+        <h2>システムの基本構造</h2>
+        <div className="architecture-content">
+          <div className="architecture-description">
+            <p>
+              TECH-BRIDGEは、モダンなWebアーキテクチャを採用した3層構造のシステムです。
+              各層が明確に分離され、拡張性と保守性を確保しています。
+            </p>
+          </div>
+          <div className="architecture-layers">
+            <div className="layer-card">
+              <div className="layer-header">
+                <h3>プレゼンテーション層</h3>
+                <span className="layer-badge">フロントエンド</span>
+              </div>
+              <div className="layer-content">
+                <p className="layer-description">利用者が操作する画面部分</p>
+                <ul className="layer-tech">
+                  <li>React 18（TypeScript）</li>
+                  <li>React Router（ルーティング）</li>
+                  <li>Axios（API通信）</li>
+                  <li>Socket.io-client（リアルタイム通信）</li>
+                </ul>
+                <p className="layer-responsibility">
+                  <strong>役割：</strong>ユーザーインターフェースの提供、入力データの検証、サーバーへのリクエスト送信
+                </p>
+              </div>
+            </div>
+            <div className="layer-arrow">↓</div>
+            <div className="layer-card">
+              <div className="layer-header">
+                <h3>アプリケーション層</h3>
+                <span className="layer-badge">バックエンド</span>
+              </div>
+              <div className="layer-content">
+                <p className="layer-description">ビジネスロジックとAPI処理</p>
+                <ul className="layer-tech">
+                  <li>Node.js + Express</li>
+                  <li>JWT認証（セキュリティ）</li>
+                  <li>Socket.io（リアルタイム通信）</li>
+                  <li>RESTful API</li>
+                </ul>
+                <p className="layer-responsibility">
+                  <strong>役割：</strong>認証・認可、データ加工、ビジネスルールの実装、フロントエンドとデータベース間の仲介
+                </p>
+              </div>
+            </div>
+            <div className="layer-arrow">↓</div>
+            <div className="layer-card">
+              <div className="layer-header">
+                <h3>データ層</h3>
+                <span className="layer-badge">データベース</span>
+              </div>
+              <div className="layer-content">
+                <p className="layer-description">データの永続化と管理</p>
+                <ul className="layer-tech">
+                  <li>MongoDB Atlas（クラウドデータベース）</li>
+                  <li>Mongoose（ODM）</li>
+                  <li>データモデル：User, Circle, Company, Support</li>
+                </ul>
+                <p className="layer-responsibility">
+                  <strong>役割：</strong>データの保存・取得、問い合わせ処理、データ整合性の維持
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="architecture-infra">
+            <h3>インフラ構成</h3>
+            <div className="infra-grid">
+              <div className="infra-item">
+                <strong>ホスティング：</strong>Vercel（サーバーレス関数）
+              </div>
+              <div className="infra-item">
+                <strong>CI/CD：</strong>GitHub Actions（自動デプロイ）
+              </div>
+              <div className="infra-item">
+                <strong>バージョン管理：</strong>Git / GitHub
+              </div>
+              <div className="infra-item">
+                <strong>環境変数管理：</strong>Vercel Dashboard
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="features">
         <h2>主な機能</h2>
         <div className="feature-grid">

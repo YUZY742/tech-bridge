@@ -1,8 +1,9 @@
 .navbar {
-  background-color: #2c3e50;
+  background-color: #003366;
   color: white;
   padding: 1rem 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-bottom: 3px solid #0066cc;
 }
 
 .navbar-container {
@@ -15,10 +16,11 @@
 }
 
 .navbar-brand {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: bold;
   color: white;
   text-decoration: none;
+  letter-spacing: 0.05em;
 }
 
 .navbar-menu {
@@ -43,7 +45,7 @@
 }
 
 .navbar-button {
-  background-color: #3498db;
+  background-color: #0066cc;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -52,10 +54,11 @@
   text-decoration: none;
   display: inline-block;
   transition: background-color 0.2s;
+  font-weight: normal;
 }
 
 .navbar-button:hover {
-  background-color: #2980b9;
+  background-color: #0052a3;
 }
 
 @media (max-width: 768px) {
