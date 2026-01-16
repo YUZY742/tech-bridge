@@ -62,6 +62,11 @@ router.get('/support/:supportId', authenticate, async (req, res) => {
 router.post('/support/:supportId', authenticate, async (req, res) => {
   try {
     const { activity, contribution } = req.body;
+
+    if (!activity || !contribution) {
+      return res.status(400).json({ message: 'Activity and contribution are required' });
+    }
+
     const support = await Support.findById(req.params.supportId);
 
     if (!support) {
@@ -77,15 +82,20 @@ router.post('/support/:supportId', authenticate, async (req, res) => {
       return res.status(403).json({ message: 'Only circle members can log activities' });
     }
 
-    support.activityLogs.push({
+    const activityLog = {
       userId: req.userId,
       activity,
       contribution,
       date: new Date()
-    });
+    };
 
+    support.activityLogs.push(activityLog);
     await support.save();
-    res.json(support.activityLogs[support.activityLogs.length - 1]);
+
+    res.json({
+      message: 'Activity logged successfully',
+      activityLog: support.activityLogs[support.activityLogs.length - 1]
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

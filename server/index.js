@@ -33,6 +33,7 @@ app.use('/api/health', require('./routes/health'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/circles', require('./routes/circles'));
 app.use('/api/companies', require('./routes/companies'));
+app.use('/api/students', require('./routes/students'));
 app.use('/api/supports', require('./routes/supports'));
 app.use('/api/chat', require('./routes/chat'));
 app.use('/api/activity', require('./routes/activity'));

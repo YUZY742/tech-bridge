@@ -14,6 +14,27 @@ router.post('/', authenticate, async (req, res) => {
 
     const { circleId, supportType, amount, items, purpose } = req.body;
 
+    // Validation
+    if (!circleId || !supportType) {
+      return res.status(400).json({ message: 'Circle ID and support type are required' });
+    }
+
+    if (!['funding', 'equipment', 'mentorship', 'software'].includes(supportType)) {
+      return res.status(400).json({ message: 'Invalid support type' });
+    }
+
+    // Check if circle exists
+    const circle = await Circle.findById(circleId);
+    if (!circle) {
+      return res.status(404).json({ message: 'Circle not found' });
+    }
+
+    // Check if company exists
+    const company = await Company.findOne({ userId: req.userId });
+    if (!company) {
+      return res.status(404).json({ message: 'Company profile not found' });
+    }
+
     // Generate chat room ID
     const chatRoomId = `support-${req.userId}-${circleId}-${Date.now()}`;
 
@@ -23,16 +44,19 @@ router.post('/', authenticate, async (req, res) => {
       supportType,
       amount: amount || 0,
       items: items || [],
-      purpose,
+      purpose: purpose || '',
       chatRoomId,
       status: 'pending'
     });
 
     await support.save();
 
-    // Update circle supporters
-    const circle = await Circle.findById(circleId);
-    if (circle) {
+    // Update circle supporters (avoid duplicates)
+    const existingSupporter = circle.supporters.find(
+      s => s.companyId.toString() === req.userId.toString() && 
+           s.status === 'pending'
+    );
+    if (!existingSupporter) {
       circle.supporters.push({
         companyId: req.userId,
         supportType,
@@ -42,9 +66,12 @@ router.post('/', authenticate, async (req, res) => {
       await circle.save();
     }
 
-    // Update company supported circles
-    const company = await Company.findOne({ userId: req.userId });
-    if (company) {
+    // Update company supported circles (avoid duplicates)
+    const existingSupport = company.supportedCircles.find(
+      s => s.circleId.toString() === circleId.toString() && 
+           s.status === 'pending'
+    );
+    if (!existingSupport) {
       company.supportedCircles.push({
         circleId,
         supportType,
@@ -95,6 +122,15 @@ router.get('/circle/:circleId', authenticate, async (req, res) => {
 router.put('/:id/status', authenticate, async (req, res) => {
   try {
     const { status } = req.body;
+    
+    if (!status) {
+      return res.status(400).json({ message: 'Status is required' });
+    }
+
+    if (!['pending', 'approved', 'disbursed', 'completed', 'cancelled'].includes(status)) {
+      return res.status(400).json({ message: 'Invalid status' });
+    }
+
     const support = await Support.findById(req.params.id);
 
     if (!support) {
@@ -104,15 +140,44 @@ router.put('/:id/status', authenticate, async (req, res) => {
     // Check authorization
     const isCompany = req.userRole === 'company' && 
                      support.companyId.toString() === req.userId.toString();
+    const circle = await Circle.findById(support.circleId);
+    const isCircleLeader = circle && circle.members.some(
+      m => m.userId.toString() === req.userId.toString() && m.role === 'leader'
+    );
     const isAdmin = req.userRole === 'admin';
 
-    if (!isCompany && !isAdmin) {
+    if (!isCompany && !isCircleLeader && !isAdmin) {
       return res.status(403).json({ message: 'Not authorized' });
     }
 
+    const oldStatus = support.status;
     support.status = status;
     support.updatedAt = new Date();
     await support.save();
+
+    // Update circle and company records if status changed to approved/completed
+    if (status === 'approved' || status === 'completed') {
+      // Update circle supporters
+      const circleSupporter = circle.supporters.find(
+        s => s.companyId.toString() === support.companyId.toString()
+      );
+      if (circleSupporter) {
+        circleSupporter.status = status;
+        await circle.save();
+      }
+
+      // Update company supported circles
+      const company = await Company.findOne({ userId: support.companyId });
+      if (company) {
+        const companySupport = company.supportedCircles.find(
+          s => s.circleId.toString() === support.circleId.toString()
+        );
+        if (companySupport) {
+          companySupport.status = status;
+          await company.save();
+        }
+      }
+    }
 
     res.json(support);
   } catch (error) {

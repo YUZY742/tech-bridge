@@ -141,4 +141,65 @@ router.put('/kpis', authenticate, async (req, res) => {
   }
 });
 
+// Get company statistics
+router.get('/stats', authenticate, async (req, res) => {
+  try {
+    if (req.userRole !== 'company') {
+      return res.status(403).json({ message: 'Only companies can access stats' });
+    }
+
+    const company = await Company.findOne({ userId: req.userId });
+    if (!company) {
+      return res.status(404).json({ message: 'Company not found' });
+    }
+
+    const Support = require('../models/Support');
+    const supports = await Support.find({ companyId: req.userId });
+
+    const stats = {
+      totalSupported: company.supportedCircles.length,
+      activeSupports: supports.filter(s => 
+        ['pending', 'approved'].includes(s.status)
+      ).length,
+      completedSupports: supports.filter(s => s.status === 'completed').length,
+      totalBudget: Object.values(company.budgetCategories).reduce(
+        (sum, cat) => sum + (cat.allocated || 0), 0
+      ),
+      usedBudget: Object.values(company.budgetCategories).reduce(
+        (sum, cat) => sum + (cat.used || 0), 0
+      ),
+      kpis: company.kpis
+    };
+
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Update budget categories
+router.put('/budget', authenticate, async (req, res) => {
+  try {
+    if (req.userRole !== 'company') {
+      return res.status(403).json({ message: 'Only companies can update budget' });
+    }
+
+    const company = await Company.findOne({ userId: req.userId });
+    if (!company) {
+      return res.status(404).json({ message: 'Company not found' });
+    }
+
+    if (req.body.budgetCategories) {
+      Object.assign(company.budgetCategories, req.body.budgetCategories);
+    }
+    
+    company.updatedAt = new Date();
+    await company.save();
+
+    res.json(company.budgetCategories);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

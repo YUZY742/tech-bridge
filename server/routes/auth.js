@@ -11,14 +11,42 @@ router.post('/register', async (req, res) => {
   try {
     const { email, password, role, profile } = req.body;
 
+    // Validation
+    if (!email || !password || !role) {
+      return res.status(400).json({ message: 'Email, password, and role are required' });
+    }
+
+    if (!['student', 'company', 'admin'].includes(role)) {
+      return res.status(400).json({ message: 'Invalid role' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Invalid email format' });
+    }
+
     // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
+    // Company-specific validation
+    if (role === 'company') {
+      if (!profile?.companyName || !profile?.industry) {
+        return res.status(400).json({ 
+          message: 'Company name and industry are required for company accounts' 
+        });
+      }
+    }
+
     // Create user
-    const user = new User({ email, password, role, profile });
+    const user = new User({ email, password, role, profile: profile || {} });
     await user.save();
 
     // If company, create company profile
@@ -27,7 +55,13 @@ router.post('/register', async (req, res) => {
         userId: user._id,
         companyName: profile.companyName,
         industry: profile.industry,
-        description: profile.description || ''
+        description: profile.description || '',
+        techFocus: profile.techFocus || [],
+        budgetCategories: {
+          recruitment: { allocated: 0, used: 0 },
+          rnd: { allocated: 0, used: 0 },
+          education: { allocated: 0, used: 0 }
+        }
       });
       await company.save();
     }
@@ -49,6 +83,9 @@ router.post('/register', async (req, res) => {
       }
     });
   } catch (error) {
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message });
+    }
     res.status(500).json({ message: error.message });
   }
 });
@@ -57,6 +94,11 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -113,6 +155,77 @@ router.get('/me', authenticate, async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
     res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Update user profile
+router.put('/profile', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update profile fields
+    if (req.body.profile) {
+      user.profile = { ...user.profile, ...req.body.profile };
+    }
+
+    await user.save();
+
+    // If company, update company profile
+    if (user.role === 'company' && req.body.profile) {
+      const company = await Company.findOne({ userId: req.userId });
+      if (company) {
+        if (req.body.profile.companyName) company.companyName = req.body.profile.companyName;
+        if (req.body.profile.industry) company.industry = req.body.profile.industry;
+        if (req.body.profile.description !== undefined) company.description = req.body.profile.description;
+        if (req.body.profile.techFocus) company.techFocus = req.body.profile.techFocus;
+        company.updatedAt = new Date();
+        await company.save();
+      }
+    }
+
+    res.json({
+      id: user._id,
+      email: user.email,
+      role: user.role,
+      profile: user.profile
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Change password
+router.put('/password', authenticate, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: 'Current password and new password are required' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: 'New password must be at least 6 characters' });
+    }
+
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Current password is incorrect' });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ message: 'Password updated successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

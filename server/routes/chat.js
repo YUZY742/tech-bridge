@@ -36,6 +36,11 @@ router.get('/:supportId', authenticate, async (req, res) => {
 router.post('/:supportId/message', authenticate, async (req, res) => {
   try {
     const { message } = req.body;
+    
+    if (!message || message.trim().length === 0) {
+      return res.status(400).json({ message: 'Message cannot be empty' });
+    }
+
     const support = await Support.findById(req.params.supportId);
 
     if (!support) {
@@ -53,12 +58,13 @@ router.post('/:supportId/message', authenticate, async (req, res) => {
       return res.status(403).json({ message: 'Not authorized' });
     }
 
-    support.messages.push({
+    const newMessage = {
       senderId: req.userId,
-      message,
+      message: message.trim(),
       timestamp: new Date()
-    });
+    };
 
+    support.messages.push(newMessage);
     await support.save();
 
     res.json(support.messages[support.messages.length - 1]);
