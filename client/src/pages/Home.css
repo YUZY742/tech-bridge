@@ -1,211 +1,317 @@
+/* Spotify風のダークテーマデザイン */
+
 .home {
   width: 100%;
+  background: #121212;
+  color: #ffffff;
+  min-height: 100vh;
 }
 
+/* ヒーローセクション */
 .hero {
+  position: relative;
+  padding: 8rem 2rem 6rem;
+  background: linear-gradient(180deg, #1db954 0%, #1ed760 50%, #121212 100%);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(29, 185, 84, 0.3) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
   text-align: center;
-  padding: 3rem 2rem;
-  background: #003366;
-  color: white;
-  margin-bottom: 0;
-  border-bottom: 4px solid #0066cc;
 }
 
 .hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  font-weight: bold;
-  letter-spacing: 0.05em;
+  font-size: 5rem;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  line-height: 1.1;
 }
 
 .subtitle {
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
-  font-weight: normal;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
 }
 
 .description {
-  font-size: 1rem;
-  max-width: 900px;
-  margin: 0 auto 2rem;
+  font-size: 1.1rem;
+  max-width: 800px;
+  margin: 0 auto 3rem;
   line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 .cta-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .cta-button {
-  padding: 1rem 2rem;
-  border-radius: 4px;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
   text-decoration: none;
-  font-weight: bold;
-  transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
 }
 
 .cta-button.primary {
-  background-color: #0066cc;
-  color: white;
-  border: 2px solid #0066cc;
+  background-color: #ffffff;
+  color: #121212;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .cta-button.primary:hover {
-  background-color: #0052a3;
-  border-color: #0052a3;
-  transform: translateY(-1px);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background-color: #f0f0f0;
 }
 
 .cta-button.secondary {
   background-color: transparent;
-  color: white;
-  border: 2px solid white;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 .cta-button.secondary:hover {
   background-color: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+  transform: scale(1.05);
 }
 
+/* 機能セクション */
+.features {
+  padding: 5rem 2rem;
+  background: #121212;
+}
+
+.features h2 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 3rem;
+  text-align: left;
+  padding-left: 2rem;
+  letter-spacing: -0.02em;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.feature-card {
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #1db954, #1ed760);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  background: #282828;
+  transform: translateY(-4px);
+}
+
+.feature-card:hover::before {
+  transform: scaleX(1);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.feature-card h3 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.feature-card p {
+  color: #b3b3b3;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* システム構造セクション */
 .system-architecture {
-  background-color: #f8f9fa;
-  padding: 3rem 2rem;
-  margin-bottom: 0;
-  border-bottom: 1px solid #dee2e6;
+  background: #181818;
+  padding: 5rem 2rem;
+  border-top: 1px solid #282828;
 }
 
 .system-architecture h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 1.8rem;
-  color: #003366;
-  font-weight: bold;
-  border-bottom: 3px solid #0066cc;
-  padding-bottom: 1rem;
-  display: inline-block;
-  width: 100%;
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 3rem;
+  text-align: left;
+  padding-left: 2rem;
+  letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
 .architecture-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
 .architecture-description {
-  text-align: center;
+  text-align: left;
   margin-bottom: 3rem;
-  color: #333;
-  font-size: 1rem;
+  color: #b3b3b3;
+  font-size: 1.1rem;
   line-height: 1.8;
+  padding: 0 2rem;
 }
 
 .architecture-layers {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
   margin-bottom: 3rem;
+  padding: 0 2rem;
 }
 
 .layer-card {
-  background: white;
-  border: 1px solid #dee2e6;
-  border-left: 4px solid #0066cc;
+  background: #1a1a1a;
+  border-radius: 8px;
   padding: 2rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.layer-card:hover {
+  background: #282828;
+  border-color: #1db954;
+  transform: translateY(-2px);
 }
 
 .layer-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e9ecef;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #282828;
 }
 
 .layer-header h3 {
-  color: #003366;
-  font-size: 1.3rem;
-  font-weight: bold;
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 700;
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .layer-badge {
-  background-color: #0066cc;
-  color: white;
-  padding: 0.3rem 0.8rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: normal;
+  background: linear-gradient(135deg, #1db954, #1ed760);
+  color: #121212;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .layer-content {
-  color: #333;
+  color: #b3b3b3;
 }
 
 .layer-description {
   font-size: 1rem;
-  margin-bottom: 1rem;
-  color: #555;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
   font-weight: 500;
 }
 
 .layer-tech {
   list-style: none;
   padding: 0;
-  margin: 1rem 0;
+  margin: 0;
 }
 
 .layer-tech li {
-  padding: 0.5rem 0;
+  padding: 0.6rem 0;
   padding-left: 1.5rem;
   position: relative;
-  color: #333;
+  color: #b3b3b3;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
 }
 
-.layer-tech li:before {
+.layer-tech li:hover {
+  color: #1db954;
+}
+
+.layer-tech li::before {
   content: "▸";
   position: absolute;
   left: 0;
-  color: #0066cc;
+  color: #1db954;
   font-weight: bold;
-}
-
-.layer-responsibility {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e9ecef;
-  color: #555;
-  line-height: 1.7;
-}
-
-.layer-responsibility strong {
-  color: #003366;
-}
-
-.layer-arrow {
-  text-align: center;
-  font-size: 1.5rem;
-  color: #0066cc;
-  font-weight: bold;
-  margin: -1rem 0;
 }
 
 .architecture-infra {
-  background: white;
-  border: 1px solid #dee2e6;
-  padding: 2rem;
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 2.5rem;
   margin-top: 2rem;
+  border: 1px solid #282828;
 }
 
 .architecture-infra h3 {
-  color: #003366;
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e9ecef;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  letter-spacing: -0.01em;
 }
 
 .infra-grid {
@@ -215,108 +321,86 @@
 }
 
 .infra-item {
-  padding: 0.8rem;
-  background-color: #f8f9fa;
-  border-left: 3px solid #0066cc;
-  color: #333;
+  padding: 1rem;
+  background-color: #121212;
+  border-radius: 6px;
+  color: #b3b3b3;
   line-height: 1.6;
+  font-size: 0.95rem;
+  border: 1px solid #282828;
+  transition: all 0.2s ease;
+}
+
+.infra-item:hover {
+  background-color: #282828;
+  border-color: #1db954;
 }
 
 .infra-item strong {
-  color: #003366;
+  color: #1db954;
+  font-weight: 600;
 }
 
-.features {
-  margin-top: 0;
-  padding: 3rem 2rem;
-  background-color: white;
-}
-
-.features h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 1.8rem;
-  color: #003366;
-  font-weight: bold;
-  border-bottom: 3px solid #0066cc;
-  padding-bottom: 1rem;
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.feature-card {
-  background: #f8f9fa;
-  padding: 2rem;
-  border: 1px solid #dee2e6;
-  border-left: 4px solid #0066cc;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.feature-card:hover {
-  border-left-color: #003366;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.feature-card h3 {
-  color: #003366;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.feature-card p {
-  color: #333;
-  line-height: 1.8;
-}
-
+/* レスポンシブデザイン */
 @media (max-width: 768px) {
   .hero {
-    padding: 2rem 1rem;
+    padding: 4rem 1.5rem 3rem;
   }
 
   .hero h1 {
-    font-size: 1.8rem;
+    font-size: 3rem;
   }
   
   .subtitle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
-  .system-architecture {
-    padding: 2rem 1rem;
+  .description {
+    font-size: 1rem;
   }
 
-  .architecture-layers {
-    gap: 1.5rem;
-  }
-
-  .layer-card {
-    padding: 1.5rem;
-  }
-
-  .layer-header {
+  .cta-buttons {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    align-items: center;
   }
 
-  .layer-arrow {
-    margin: -0.5rem 0;
+  .cta-button {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .features h2,
+  .system-architecture h2 {
+    font-size: 2rem;
+    padding-left: 1rem;
+  }
+
+  .feature-grid,
+  .architecture-layers {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+
+  .architecture-description {
+    padding: 0 1rem;
+  }
+
+  .architecture-infra {
+    padding: 2rem 1.5rem;
   }
 
   .infra-grid {
     grid-template-columns: 1fr;
   }
-  
-  .feature-grid {
-    grid-template-columns: 1fr;
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 2.5rem;
   }
 
-  .features {
-    padding: 2rem 1rem;
+  .features,
+  .system-architecture {
+    padding: 3rem 1rem;
   }
 }
